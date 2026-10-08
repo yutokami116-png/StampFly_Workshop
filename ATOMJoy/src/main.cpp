@@ -38,7 +38,7 @@
 #include <SPIFFS.h>
 #include "buzzer.h"
 
-#define CHANNEL 1
+#define CHANNEL 3
 
 #define ANGLECONTROL 0
 #define RATECONTROL 1
@@ -471,13 +471,17 @@ uint8_t check_alt_mode_change(void)
 
 
 void loop() {
-  uint16_t _throttle;// = getThrottle();
-  uint16_t _phi;// = getAileron();
-  uint16_t _theta;// = getElevator();
-  uint16_t _psi;// = getRudder();
+  uint16_t _throttle = getThrottle();
+  uint16_t _phi = getAileron();
+  uint16_t _theta = getElevator();
+  uint16_t _psi = getRudder();
 
+  if(_throttle < 100){
+    _throttle = 0;
+    return;
+  }
 
-  while(Loop_flag==0);
+  if(Loop_flag==0) return;
   Loop_flag = 0;
   etime = stime;
   stime = micros();
